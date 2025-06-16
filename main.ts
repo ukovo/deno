@@ -1,4 +1,5 @@
 const userID = Deno.env.get('UUID') || 'd342d11e-d424-4583-b36e-524ab1f0afa4'
+const ADMIN_TOKEN = Deno.env.get("ADMIN_TOKEN") || "passwd"
 const proxyIP = Deno.env.get('PROXYIP') || ''
 
 if (!isValidUUID(userID)) {
@@ -8,12 +9,18 @@ if (!isValidUUID(userID)) {
 console.log(Deno.version)
 
 Deno.serve(async (request: Request) => {
+  const url = new URL(request.url)
   const upgrade = request.headers.get('upgrade') || ''
-  if (upgrade.toLowerCase() != 'websocket') {
-    const url = new URL(request.url)
+  const adminQuery = url.searchParams.get('admin') || ''
+
+  if (upgrade.toLowerCase() !== 'websocket') {
     switch (url.pathname) {
-      case '/':
-        return new Response('Hello, world!')
+      case '/api': {
+        if (adminQuery !== ADMIN_TOKEN) {
+          return new Response('Unauthorized', { status: 401 })
+        }
+        return new Response('Hello, admin!')
+      }
       case `/${userID}`: {
         const vlessConfig = getVLESSConfig(userID, url.hostname, url.port || (url.protocol === 'https:' ? 443 : 80))
         return new Response(`${vlessConfig}`, {
@@ -27,6 +34,9 @@ Deno.serve(async (request: Request) => {
         return new Response('Not found', { status: 404 })
     }
   } else {
+    if (adminQuery !== ADMIN_TOKEN) {
+      return new Response('Unauthorized', { status: 401 })
+    }
     return await vlessOverWSHandler(request)
   }
 })
