@@ -21,6 +21,15 @@ Deno.serve(async (request: Request) => {
         }
         return new Response('Hello, admin!')
       }
+      case '/': {
+        const html = await Deno.readTextFile('panel.html')
+        return new Response(html, {
+          status: 200,
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+          },
+        })
+      }
       case `/${userID}`: {
         const vlessConfig = getVLESSConfig(userID, url.hostname, url.port || (url.protocol === 'https:' ? 443 : 80))
         return new Response(`${vlessConfig}`, {
