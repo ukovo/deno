@@ -71,6 +71,15 @@
       input:checked + .slider:before {
         transform: translateX(20px);
       }
+
+      /* Hide scrollbar for server cards container */
+      #server-cards {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      #server-cards::-webkit-scrollbar {
+        display: none;
+      }
     </style>
   </head>
   <body class="bg-gray-900 text-gray-200 min-h-screen p-4">
@@ -129,7 +138,7 @@
           class="flex gap-4 overflow-x-auto text-sm mb-4 pb-2 cursor-grab active:cursor-grabbing"
         >
           <div
-            class="bg-gray-800 p-4 rounded cursor-pointer hover:bg-gray-700"
+            class="bg-gray-800 p-4 rounded cursor-pointer hover:bg-gray-700 min-w-[16rem]"
             onclick="showServerInfo('guest')"
           >
             guest
@@ -425,9 +434,14 @@
           const hostPort = `${s.host}${s.port ? ":" + s.port : ""}`;
           const label = s.tag ? `${s.tag}` : hostPort;
           card.className =
-            "bg-gray-800 rounded-lg p-4 shadow space-y-1 cursor-pointer flex-shrink-0 min-w-[12rem]";
+            "bg-gray-800 rounded-lg p-4 shadow space-y-1 cursor-pointer flex-shrink-0 min-w-[16rem]";
           if (idx === currentServerIndex)
-            card.classList.add("ring", "ring-cyan-500");
+            card.classList.add(
+              "ring-2",
+              "ring-cyan-500",
+              "ring-offset-2",
+              "ring-offset-gray-900"
+            );
           card.onclick = () => selectServer(idx);
           card.innerHTML = `<div class="flex justify-between items-center">
              <h3 class="text-cyan-400">${label}</h3>
