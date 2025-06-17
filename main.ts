@@ -30,6 +30,7 @@ Deno.serve(async (request: Request) => {
           },
         })
       }
+
       default:
         return new Response('Not found', { status: 404 })
     }
@@ -42,8 +43,6 @@ Deno.serve(async (request: Request) => {
 })
 
 async function vlessOverWSHandler(request) {
-  // websocket server
-  // https://docs.deno.com/runtime/manual/runtime/http_server_apis#serving-websockets
   const { socket, response } = Deno.upgradeWebSocket(request)
   let address = ''
   let portWithRandomLog = ''
@@ -58,7 +57,6 @@ async function vlessOverWSHandler(request) {
   let udpStreamWrite: any = null
   let isDns = false
 
-  // ws --> remote
   readableWebSocketStream
     .pipeTo(
       new WritableStream({
