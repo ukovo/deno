@@ -71,6 +71,13 @@
         padding-right: 1rem;
       }
 
+      .no-select {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
       input:checked + .slider {
         background-color: #06b6d4;
       }
@@ -145,7 +152,7 @@
           class="flex gap-4 overflow-x-auto text-sm mb-4 pb-2 cursor-grab active:cursor-grabbing"
         >
           <div
-            class="bg-gray-800 p-4 rounded cursor-pointer hover:bg-gray-700 min-w-[16rem]"
+            class="bg-gray-800 p-4 rounded cursor-pointer hover:bg-gray-700 min-w-[16rem] no-select"
             onclick="showServerInfo('guest')"
           >
             guest
@@ -407,6 +414,34 @@
         fetchFileList();
       }
 
+      function editServer(ev, idx) {
+        ev.stopPropagation();
+        const s = servers[idx];
+        const hostPort = prompt(
+          "输入服务器地址 (host:port)",
+          `${s.host}${s.port ? ":" + s.port : ""}`,
+        );
+        if (hostPort === null) return;
+        const tag = prompt("自定义名称", s.tag || "");
+        if (tag === null) return;
+        const [host, port] = hostPort.split(":");
+        let pos = prompt(`新的顺序 (0-${servers.length - 1})`, idx);
+        let newIndex = parseInt(pos, 10);
+        if (isNaN(newIndex) || newIndex < 0 || newIndex >= servers.length) {
+          newIndex = idx;
+        }
+        servers[idx] = { host, port: port || "", tag };
+        if (newIndex !== idx) {
+          const item = servers.splice(idx, 1)[0];
+          servers.splice(newIndex, 0, item);
+          currentServerIndex = newIndex;
+        }
+        localStorage.setItem("servers", JSON.stringify(servers));
+        localStorage.setItem("currentServerIndex", currentServerIndex);
+        renderServers();
+        fetchFileList();
+      }
+
       function selectServer(idx) {
         currentServerIndex = idx;
         currentServer = servers[idx];
@@ -441,7 +476,7 @@
           const hostPort = `${s.host}${s.port ? ":" + s.port : ""}`;
           const label = s.tag ? `${s.tag}` : hostPort;
           card.className =
-            "bg-gray-800 rounded-lg p-4 shadow space-y-1 cursor-pointer flex-shrink-0 min-w-[16rem]";
+            "bg-gray-800 rounded-lg p-4 shadow space-y-1 cursor-pointer flex-shrink-0 min-w-[16rem] no-select";
           if (idx === currentServerIndex)
             card.classList.add(
               "ring-2",
@@ -452,7 +487,10 @@
           card.onclick = () => selectServer(idx);
           card.innerHTML = `<div class="flex justify-between items-center">
              <h3 class="text-cyan-400">${label}</h3>
-             <button onclick="removeServer(event, ${idx})" class="text-red-400 hover:text-red-300">×</button>
+             <div class="space-x-2">
+               <button onclick="editServer(event, ${idx})" class="text-yellow-400 hover:text-yellow-300">✎</button>
+               <button onclick="removeServer(event, ${idx})" class="text-red-400 hover:text-red-300">×</button>
+             </div>
            </div>
            <div>加载中...</div>`;
           wrap.appendChild(card);
