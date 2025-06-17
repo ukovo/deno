@@ -30,15 +30,6 @@ Deno.serve(async (request: Request) => {
           },
         })
       }
-      case `/${userID}`: {
-        const vlessConfig = getVLESSConfig(userID, url.hostname, url.port || (url.protocol === 'https:' ? 443 : 80))
-        return new Response(`${vlessConfig}`, {
-          status: 200,
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8',
-          },
-        })
-      }
       default:
         return new Response('Not found', { status: 404 })
     }
@@ -574,39 +565,4 @@ async function handleUDPOutBound(webSocket, vlessResponseHeader, log) {
       writer.write(chunk)
     },
   }
-}
-
-/**
- * @param {string} userID
- * @param {string | null} hostName
- * @returns {string}
- */
-function getVLESSConfig(userID, hostName, port) {
-  const vlessMain = `vless://${userID}\u0040${hostName}:${port}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2048#${hostName}`
-  return `
-################################################################
-v2ray
----------------------------------------------------------------
-${vlessMain}
----------------------------------------------------------------
-################################################################
-clash-meta
----------------------------------------------------------------
-- type: vless
-  name: ${hostName}
-  server: ${hostName}
-  port: ${port}
-  uuid: ${userID}
-  network: ws
-  tls: true
-  udp: false
-  sni: ${hostName}
-  client-fingerprint: chrome
-  ws-opts:
-    path: "/?ed=2048"
-    headers:
-      host: ${hostName}
----------------------------------------------------------------
-################################################################
-`
 }
