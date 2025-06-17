@@ -488,7 +488,7 @@
           card.innerHTML = `<div class="flex justify-between items-center">
              <h3 class="text-cyan-400">${label}</h3>
              <div class="space-x-2">
-               <button onclick="editServer(event, ${idx})" class="text-yellow-400 hover:text-yellow-300">✎</button>
+               <button onclick="editServer(event, ${idx})" class="text-yellow-400 hover:text-yellow-300">⌨︎</button>
                <button onclick="removeServer(event, ${idx})" class="text-red-400 hover:text-red-300">×</button>
              </div>
            </div>
@@ -525,8 +525,8 @@
               `<div class="flex justify-between items-center">` +
               `<h3 class="text-cyan-400">${label}</h3>` +
               `<div class="space-x-2">` +
-              `<button onclick="editServer(event, ${i})" class="text-yellow-400 hover:text-yellow-300">✎</button>` +
-              `<button onclick="removeServer(event, ${i})" class="text-red-400 hover:text-red-300">×</button>` +
+              `<button onclick="editServer(event, ${idx})" class="text-yellow-400 hover:text-yellow-300">⌨︎</button>` +
+              `<button onclick="removeServer(event, ${idx})" class="text-red-400 hover:text-red-300">×</button>` +
               `</div></div>` +
               `<div class="mt-1 space-y-1">` +
               `<div class="flex items-center gap-1"><span>CPU</span>` +
@@ -545,7 +545,7 @@
               `<span class="absolute inset-0 flex items-center justify-center text-[10px]">${diskUsed}/${diskTotal} GB</span>` +
               `</div></div>` +
               `</div>` +
-              `<div>流量: ${rx}/${tx} MB</div>` +
+              `<div>流量: ⬇︎ ${rx} | ⬆︎ ${tx} MB</div>` +
               `<div>IP: ${iface.ip4 || "-"} ${info.os.distro}</div>`;
           } catch (e) {
             const hostPort = `${s.host}${s.port ? ":" + s.port : ""}`;
@@ -554,8 +554,8 @@
               `<div class="flex justify-between items-center">` +
               `<h3 class="text-cyan-400">${label}</h3>` +
               `<div class="space-x-2">` +
-              `<button onclick="editServer(event, ${i})" class="text-yellow-400 hover:text-yellow-300">✎</button>` +
-              `<button onclick="removeServer(event, ${i})" class="text-red-400 hover:text-red-300">×</button>` +
+              `<button onclick="editServer(event, ${idx})" class="text-yellow-400 hover:text-yellow-300">⌨︎</button>` +
+              `<button onclick="removeServer(event, ${idx})" class="text-red-400 hover:text-red-300">×</button>` +
               `</div></div>` +
               `<div class="text-red-400 mt-1">${e.message}</div>`;
           }
