@@ -489,7 +489,7 @@
              <h3 class="text-cyan-400">${label}</h3>
              <div class="space-x-2">
                <button onclick="editServer(event, ${idx})" class="text-yellow-400 hover:text-yellow-300">⚙︎</button>
-               <button onclick="removeServer(event, ${idx})" class="text-red-400 hover:text-red-300">✖</button>
+               <button onclick="removeServer(event, ${idx})" class="text-red-400 hover:text-red-300 text-xs">✕</button>
              </div>
            </div>
            <div>加载中...</div>`;
@@ -526,7 +526,7 @@
               `<h3 class="text-cyan-400">${label}</h3>` +
               `<div class="space-x-2">` +
               `<button onclick="editServer(event, ${i})" class="text-yellow-400 hover:text-yellow-300">⚙︎</button>` +
-              `<button onclick="removeServer(event, ${i})" class="text-red-400 hover:text-red-300">✖</button>` +
+              `<button onclick="removeServer(event, ${i})" class="text-red-400 hover:text-red-300 text-xs">✕</button>` +
               `</div></div>` +
               `<div class="mt-1 space-y-1">` +
               `<div class="flex items-center gap-1"><span>CPU</span>` +
@@ -555,7 +555,7 @@
               `<h3 class="text-cyan-400">${label}</h3>` +
               `<div class="space-x-2">` +
               `<button onclick="editServer(event, ${i})" class="text-yellow-400 hover:text-yellow-300">⚙︎</button>` +
-              `<button onclick="removeServer(event, ${i})" class="text-red-400 hover:text-red-300">✖</button>` +
+              `<button onclick="removeServer(event, ${i})" class="text-red-400 hover:text-red-300 text-xs">✕</button>` +
               `</div></div>` +
               `<div class="text-red-400 mt-1">${e.message}</div>`;
           }
